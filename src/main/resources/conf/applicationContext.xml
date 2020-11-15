@@ -31,4 +31,5 @@
     <!--声明service的注解@Service所在的包名位置-->
     <!--注册组件扫描器-->
     <context:component-scan base-package="per.liu.crm.settings.service"/>
+    <context:component-scan base-package="per.liu.crm.web.filter"/>
 </beans>
