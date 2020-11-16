@@ -7,6 +7,8 @@
 
     <!--springmvc的配置文件，声明controller和其他web相关的对象-->
     <context:component-scan base-package="per.liu.crm.settings.web.controller"/>
+    <context:component-scan base-package="per.liu.crm.workbench.web.controller"/>
+
 
     <!--视图解析器-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -16,12 +18,12 @@
 
     <!--注册拦截器，未登录的用户会跳转到登录页-->
     <!--但springmvc拦截器只能拦截controller，不能拦截jsp。。。。可以使用Filter类来实现，要么jsp放到WEB-INF里-->
-    <mvc:interceptors>
+    <!--<mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/**"/>
+            <mvc:mapping path="/**/login.do"/>
             <bean class="per.liu.crm.web.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>
+    </mvc:interceptors>-->
 
     <!--mvc 注解驱动-->
     <mvc:annotation-driven/>

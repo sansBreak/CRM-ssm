@@ -25,10 +25,12 @@
     <!--声明动态代理对象-->
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <property name="basePackage" value="per.liu.crm.settings.dao"/>
+        <property name="basePackage" value="per.liu.crm.**.dao"/>
     </bean>
 
     <!--声明service的注解@Service所在的包名位置-->
     <!--注册组件扫描器-->
     <context:component-scan base-package="per.liu.crm.settings.service"/>
+    <context:component-scan base-package="per.liu.crm.workbench.service"/>
+    <context:component-scan base-package="per.liu.crm.web.filter"/>
 </beans>

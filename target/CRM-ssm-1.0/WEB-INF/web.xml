@@ -4,6 +4,18 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <!--
+    按钮命名约定：
+
+        add/creat:跳转到添加页，或者打开添加操作的模态窗口
+        save：执行添加操作
+        edit:跳转到修改页，或者打开修改页操作的模态窗口
+        update：执行修改操作
+        get：执行查询操作  find/select/query/.....
+        特殊操作  login等
+    -->
+
+
     <!--springMvc的中央调度器-->
     <servlet>
         <servlet-name>dispatcherServlet</servlet-name>

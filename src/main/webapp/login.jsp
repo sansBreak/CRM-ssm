@@ -13,6 +13,10 @@
     <script>
         $(function () {
 
+            //如果当前登录页不是顶层窗口，将其设为顶层窗口
+            if(window.top != window){
+                window.top.location=window.location;
+            }
 
             //页面加载完毕后，将用户文本框中的内容清空
             $("#loginAct").val("")
@@ -24,6 +28,15 @@
             $("#submitBtn").click(function () {
                 login();
             })
+
+            //绑定键盘事件，敲击回车键登录
+            $(window).keydown(function(event){
+                // event只是一个变量名，随意编写，是一个引用，指向了一个事件对象，所有的键盘事件对象都有一个keyCode属性，用来获取键值。				有的键盘事件对象都有一个keyCode属性，用来获取键值。
+                if(event.keyCode === 13){ // 回车键是13
+                    login();
+                }
+            });
+
         })
 
         //自定义方法，写在$(function(){})的外面

@@ -20,5 +20,6 @@
     <mappers>
         <!--name:是包名，这个包名中的所有mapper.xml一次都能加载-->
         <package name="per.liu.crm.settings.dao"/>
+        <package name="per.liu.crm.workbench.dao"/>
     </mappers>
 </configuration>
