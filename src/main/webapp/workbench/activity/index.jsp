@@ -83,6 +83,10 @@
                         */
                         if (data){
                             /*   添加成功后，刷新市场活动信息列表（局部刷新）   */
+
+                            //关闭模态窗口前，先清空表单里的内容 注意：jQuery中提供的reset函数是无效的，要转为dom对象再使用
+                            $("activityAddForm")[0].reset();
+
                             //关闭添加操作的模态窗口
                             $("#createActivityModal").modal("hide");
 
@@ -93,8 +97,69 @@
                 })
             })
 
+            //页面加载完毕后触发第一个方法
+            //默认展开列表第一页，每页两条信息
+            pageList(1,2)
+
+            //查询按钮绑定事件，触发pageList方法
+            $("#searchBtn").click(function () {
+                pageList(1,3)
+            })
 
         });
+
+
+        /**
+         * 该方法发出ajax请求到后台，从后台取得最新的市场活动信息列表数据
+         *                          通过响应回来的数据，局部刷新市场活动信息列表
+         *
+         *  需要调用pageList的情况：
+         *      1）点击左侧“活动市场”超链接时
+         *      2）添加、修改、删除后
+         *      3）点击查询按钮时
+         *      4）点击分页组件时
+         *
+         *
+         * @param pageNo 页码
+         * @param pageSize  每页所展现的记录数
+         */
+        function pageList(pageNo, pageSize) {
+            $.ajax({
+                url:"workbench/activity/pageList.do",
+                data: {
+                    "pageNo":pageNo,
+                    "pageSize":pageSize,
+                    "name": $.trim($("#search-name").val()),
+                    "owner": $.trim($("#search-owner").val()),
+                    "startDate": $.trim($("#search-startDate").val()),
+                    "endDate": $.trim($("#search-endDate").val())
+                },
+                type:"get",
+                dataType:"json",
+                success:function (data) {
+
+                    /*
+                        分页插件需要 查询结果的总数
+                        {"total":100, "dataList":[{市场活动1}, {市场活动2}, {市场活动3}]}
+                    */
+                    //在这里，一个n就是一个市场活动对象
+                    var html="";
+                    $.each(data.dataList, function (i, n) {
+
+                        html += '<tr class="active">';
+                        html += '<td><input type="checkbox" value="'+ n.id +'"/></td>';
+                        html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'detail.jsp\';">'+ n.name +'</a>';
+                        html += '</td>';
+                        html += '<td>' + n.owner + '</td>';
+                        html += '<td>' + n.startDate + '</td>';
+                        html += '<td>' + n.endDate + '</td>';
+                        html += '</tr>';
+                    })
+                    $("#activityBody").html(html);
+
+                }
+            })
+        }
 
     </script>
 </head>
@@ -112,7 +177,7 @@
             </div>
             <div class="modal-body">
 
-                <form class="form-horizontal" role="form">
+                <form id="activityAddForm" class="form-horizontal" role="form">
 
                     <div class="form-group">
                         <label for="create-owner" class="col-sm-2 control-label">所有者<span
@@ -248,14 +313,14 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">名称</div>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" id="search-name">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">所有者</div>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" id="search-owner">
                     </div>
                 </div>
 
@@ -263,17 +328,17 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">开始日期</div>
-                        <input class="form-control" type="text" id="startTime"/>
+                        <input class="form-control" type="text" id="search-startDate"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">结束日期</div>
-                        <input class="form-control" type="text" id="endTime">
+                        <input class="form-control" type="text" id="search-endDate">
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-default">查询</button>
+                <button type="button" class="btn btn-default" id="searchBtn">查询</button>
 
             </form>
         </div>
@@ -310,8 +375,8 @@
                     <td>结束日期</td>
                 </tr>
                 </thead>
-                <tbody>
-                <tr class="active">
+                <tbody id="activityBody">
+                <%--<tr class="active">
                     <td><input type="checkbox"/></td>
                     <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">发传单</a>
                     </td>
@@ -326,7 +391,7 @@
                     <td>zhangsan</td>
                     <td>2020-10-10</td>
                     <td>2020-10-20</td>
-                </tr>
+                </tr>--%>
                 </tbody>
             </table>
         </div>

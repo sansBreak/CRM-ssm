@@ -14,6 +14,7 @@
     <typeAliases>
         <!--name:实体类所在的包名-->
         <package name="per.liu.crm.settings.domain"/>
+        <package name="per.liu.crm.workbench.domain"/>
     </typeAliases>
 
     <!-- sql mapper(sql映射文件)的位置-->

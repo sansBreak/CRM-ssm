@@ -7,12 +7,15 @@ import per.liu.crm.settings.domain.User;
 import per.liu.crm.settings.service.UserService;
 import per.liu.crm.utils.DateTimeUtil;
 import per.liu.crm.utils.UUIDUtil;
+import per.liu.crm.vo.PaginationVo;
 import per.liu.crm.workbench.domain.Activity;
 import per.liu.crm.workbench.service.ActivityService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -37,7 +40,7 @@ public class ActivityController {
     //workbench/activity/save.do
     @RequestMapping("/save.do")
     @ResponseBody
-    public Boolean SaveController(HttpServletRequest request){
+    public Boolean save(HttpServletRequest request){
         System.out.println("执行市场活动添加操作！");
 
         String id = UUIDUtil.getUUID();
@@ -67,5 +70,34 @@ public class ActivityController {
         Boolean flag = activityService.save(activity);
 
         return flag;
+    }
+
+    @RequestMapping("/pageList.do")
+    @ResponseBody
+    /**
+     *  @param pageNo 页码
+     *  @param pageSize  每页所展现的记录数
+     *    在mysql语句中：
+     *           select * from table limit 10,5
+     *       表示的是显示 5 条记录，略过前 10 填记录，即显示第 11 12 13 14 15 条记录
+     *
+     */
+    public PaginationVo<Activity> PageList(Activity activity,int pageNo, int pageSize){
+        System.out.println("进入到查询市场活动信息列表的操作（结合分页查询和条件查询）");
+
+        //计算跳过的记录数
+        int skipCount = (pageNo-1)*pageSize;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("activity", activity);
+        map.put("skipCount", skipCount);
+        map.put("pageSize", pageSize);
+
+        //调用service里的方法返回值是记录条数和记录信息
+        PaginationVo<Activity> vo = activityService.pageList(map);
+        System.out.println("在ActivityController中-->" + vo);
+
+        return vo;
+
     }
 }

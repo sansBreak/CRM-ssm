@@ -8,4 +8,6 @@ import java.util.Map;
 
     public interface ActivityDao {
     int save(Activity activity);
-}
+
+        List<Activity> getActivityListByCondition(Map<String, Object> map);
+    }
