@@ -41,7 +41,8 @@ public class ActivityServiceImpl implements ActivityService {
         //取得dataList
         List<Activity> dataList = activityDao.getActivityListByCondition(map);
         //取得total
-        int total = dataList.size();
+        int total = activityDao.getTotal(map);
+        //int total = dataList.size();
         System.out.println("一共" + total + "条数据！");
 
         //创建一个Vo，将dataList和total封装到vo中

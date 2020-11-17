@@ -42,25 +42,54 @@
 
             <where>
 
-                <if test="name != null and name != '' ">
-                    a.name like '%' #{name} '%'
+                <if test="activity.name != null and activity.name != '' ">
+                    a.name like '%' #{activity.name} '%'
                 </if>
 
-                <if test="owner != null and owner != '' ">
-                    and u.name like '%' #{owner} '%'
+                <if test="activity.owner != null and activity.owner != '' ">
+                    and u.name like '%' #{activity.owner} '%'
                 </if>
 
-                <if test="startDate != null and startDate != '' ">
-                    and a.startDate &gt;  #{startDate}
+                <if test="activity.startDate != null and activity.startDate != '' ">
+                    and a.startDate &gt;  #{activity.startDate}
                 </if>
 
-                <if test="endDate != null and endDate != '' ">
-                    and a.endDate &lt;  #{endDate}
+                <if test="activity.endDate != null and activity.endDate != '' ">
+                    and a.endDate &lt;  #{activity.endDate}
                 </if>
 
             </where>
 
         order by a.createTime desc
         limit #{skipCount},#{pageSize}
+    </select>
+
+    <select id="getTotal" resultType="int">
+        select count(*)
+
+        from tbl_activity a
+        join tbl_user u
+        on a.owner=u.id
+
+        <where>
+
+            <if test="activity.name != null and activity.name != '' ">
+                a.name like '%' #{activity.name} '%'
+            </if>
+
+            <if test="activity.owner != null and activity.owner != '' ">
+                and u.name like '%' #{activity.owner} '%'
+            </if>
+
+            <if test="activity.startDate != null and activity.startDate != '' ">
+                and a.startDate &gt;  #{activity.startDate}
+            </if>
+
+            <if test="activity.endDate != null and activity.endDate != '' ">
+                and a.endDate &lt;  #{activity.endDate}
+            </if>
+
+        </where>
+
     </select>
 </mapper>

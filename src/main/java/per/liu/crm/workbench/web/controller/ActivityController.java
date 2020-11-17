@@ -88,6 +88,12 @@ public class ActivityController {
         //计算跳过的记录数
         int skipCount = (pageNo-1)*pageSize;
 
+        System.out.println("---------------------");
+        System.out.println(activity);
+        System.out.println(activity.getName());
+        System.out.println("---------------------");
+
+
         Map<String, Object> map = new HashMap<>();
         map.put("activity", activity);
         map.put("skipCount", skipCount);

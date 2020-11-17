@@ -6,8 +6,10 @@ import per.liu.crm.workbench.domain.Activity;
 import java.util.List;
 import java.util.Map;
 
-    public interface ActivityDao {
+public interface ActivityDao {
     int save(Activity activity);
 
-        List<Activity> getActivityListByCondition(Map<String, Object> map);
-    }
+    List<Activity> getActivityListByCondition(Map<String, Object> map);
+
+    int getTotal(Map<String, Object> map);
+}
