@@ -19,7 +19,6 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 	
 	$(function(){
 
-		alert("进入到detail.jsp")
 
 		$("#remark").focus(function(){
 			if(cancelAndSaveBtnDefault){
@@ -130,7 +129,6 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 		//为更新按钮绑定事件
 		$("#updateRemarkBtn").click(function () {
-
 			var id = $("#remarkId").val();
 
 			$.ajax({

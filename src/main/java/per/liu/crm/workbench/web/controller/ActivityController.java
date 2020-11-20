@@ -199,6 +199,8 @@ public class ActivityController {
     @RequestMapping("/saveRemark.do")
     @ResponseBody
     public Map<String, Object> saveRemark(ActivityRemark ar, HttpServletRequest request){
+        System.out.println("执行添加评论的操作");
+
         ar.setId(UUIDUtil.getUUID());
         ar.setCreateTime(DateTimeUtil.getSysTime());
 
@@ -216,4 +218,24 @@ public class ActivityController {
 
     }
 
+    @RequestMapping("/updateRemark.do")
+    @ResponseBody
+    public Map<String, Object> updateRemark(ActivityRemark ar, HttpServletRequest request){
+        System.out.println("执行修改评论的操作");
+
+        //添加修改时间
+        ar.setEditTime(DateTimeUtil.getSysTime());
+        //添加修改人
+        String editBy = ((User) request.getSession().getAttribute("user")).getName();
+        ar.setEditBy(editBy);
+        //将editFlag改为1
+        ar.setEditFlag("1");
+
+        boolean flag = activityService.updateRemark(ar);
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", flag);
+        map.put("ar",ar);
+
+        return map;
+    }
  }

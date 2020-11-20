@@ -359,7 +359,7 @@
                     //在这里，一个n就是一个市场活动对象
                     var html = "";
                     $.each(data.dataList, function (i, n) {
-                            alert("id----->"+ n.id)
+
                         html += '<tr class="active">';
                         html += '<td><input type="checkbox" name="xz" value="' + n.id + '"/></td>';
                         html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.do?id='+n.id+'\';">' + n.name + '</a>';
