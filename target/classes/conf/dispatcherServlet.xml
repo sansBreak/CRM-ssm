@@ -11,10 +11,10 @@
 
 
     <!--视图解析器-->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+   <!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
-    </bean>
+    </bean>-->
 
     <!--注册拦截器，未登录的用户会跳转到登录页-->
     <!--但springmvc拦截器只能拦截controller，不能拦截jsp。。。。可以使用Filter类来实现，要么jsp放到WEB-INF里-->

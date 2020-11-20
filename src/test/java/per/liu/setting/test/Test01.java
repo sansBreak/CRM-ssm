@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import per.liu.crm.utils.DateTimeUtil;
+import per.liu.crm.utils.MD5Util;
 
 import java.util.List;
 
@@ -19,5 +20,10 @@ public class Test01 {
         System.out.println(count);
 
 
+    }
+
+    @Test
+    public void test02(){
+        System.out.println(MD5Util.getMD5("8"));
     }
 }
