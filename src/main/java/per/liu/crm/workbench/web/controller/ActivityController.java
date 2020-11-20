@@ -121,12 +121,8 @@ public class ActivityController {
 
         System.out.println("执行市场活动的删除操作");
 
-        for (String id1 : id) {
-            System.out.println("--------" + id1);
-        }
 
         boolean flag = activityService.delete(id);
-        System.out.println("flag----->" + flag);
 
         //flag表示删除成功与否
         return flag;
@@ -188,4 +184,36 @@ public class ActivityController {
 
         return activityRemarkList;
     }
-}
+
+    @RequestMapping("/deleteRemark.do")
+    @ResponseBody
+    public boolean deleteRemark(String id){
+        System.out.println("执行删除评论的操作");
+
+        boolean flag = activityService.deleteRemark(id);
+
+
+        return flag;
+    }
+
+    @RequestMapping("/saveRemark.do")
+    @ResponseBody
+    public Map<String, Object> saveRemark(ActivityRemark ar, HttpServletRequest request){
+        ar.setId(UUIDUtil.getUUID());
+        ar.setCreateTime(DateTimeUtil.getSysTime());
+
+        //从session中取得当前用户的用户名
+        String createBy = ((User) request.getSession().getAttribute("user")).getName();
+        ar.setCreateBy(createBy);
+        ar.setEditFlag("0");
+
+        boolean flag = activityService.saveRemark(ar);
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", flag);
+        map.put("ar",ar);
+
+        return map;
+
+    }
+
+ }

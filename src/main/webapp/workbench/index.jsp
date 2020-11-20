@@ -14,7 +14,6 @@
 
         //页面加载完毕
         $(function () {
-            alert("进入woekbench下的index。jsp了")
 
             //导航中所有文本颜色为黑色
             $(".liClass > a").css("color", "black");
