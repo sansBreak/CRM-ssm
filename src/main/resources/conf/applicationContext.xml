@@ -33,4 +33,6 @@
     <context:component-scan base-package="per.liu.crm.settings.service"/>
     <context:component-scan base-package="per.liu.crm.workbench.service"/>
     <context:component-scan base-package="per.liu.crm.web.filter"/>
+
+    <!--注册监听器-->
 </beans>

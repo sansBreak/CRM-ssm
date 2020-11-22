@@ -16,7 +16,7 @@ public class SqlSessionUtil {
 	
 	static{
 		
-		String resource = "mybatis-config.xml";
+		String resource = "conf/mybatis-config.xml";
 		InputStream inputStream = null;
 		try {
 			inputStream = Resources.getResourceAsStream(resource);
