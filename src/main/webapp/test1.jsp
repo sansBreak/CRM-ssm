@@ -32,6 +32,16 @@
             }
         })
 
+        //加入时间控件  使用的是class选择器
+        $(".time").datetimepicker({
+            minView: "month",
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayBtn: true,
+            pickerPosition: "bottom-left"
+        });
+
 
     </script>
 

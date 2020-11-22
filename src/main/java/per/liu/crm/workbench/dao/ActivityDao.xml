@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="per.liu.crm.workbench.dao.ActivityDao">
     <insert id="save">
-            insert into tbl_activity(
+            insert into tbl_clue(
                 id,
                 owner,
                 name,
