@@ -9,6 +9,7 @@ import per.liu.crm.settings.domain.User;
 import per.liu.crm.settings.service.UserService;
 import per.liu.crm.utils.DateTimeUtil;
 import per.liu.crm.utils.UUIDUtil;
+import per.liu.crm.workbench.domain.Activity;
 import per.liu.crm.workbench.domain.Clue;
 import per.liu.crm.workbench.service.ClueService;
 
@@ -61,4 +62,14 @@ public class ClueController {
 
         return mv;
     }
+
+    @RequestMapping("/getActivityListByClueId.do")
+    @ResponseBody
+    public List<Activity> getActivityListByClueId(String clueId){
+        System.out.println("进入取得关联的市场活动信息列表");
+
+        return clueService.getActivityListByClueId(clueId);
+
+    }
+
 }

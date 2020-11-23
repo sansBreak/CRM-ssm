@@ -24,6 +24,6 @@ public class Test01 {
 
     @Test
     public void test02(){
-        System.out.println(MD5Util.getMD5("8"));
+        System.out.println(MD5Util.getMD5("4"));
     }
 }

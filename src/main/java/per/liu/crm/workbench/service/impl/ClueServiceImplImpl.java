@@ -2,10 +2,12 @@ package per.liu.crm.workbench.service.impl;
 
 import org.springframework.stereotype.Service;
 import per.liu.crm.workbench.dao.ClueDao;
+import per.liu.crm.workbench.domain.Activity;
 import per.liu.crm.workbench.domain.Clue;
 import per.liu.crm.workbench.service.ClueService;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class ClueServiceImplImpl implements ClueService {
@@ -30,5 +32,11 @@ public class ClueServiceImplImpl implements ClueService {
     public Clue detail(String id) {
 
         return clueDao.detail(id);
+    }
+
+    @Override
+    public List<Activity> getActivityListByClueId(String clueId) {
+        List<Activity> activityList= clueDao.getActivityListByClueId(clueId);
+        return activityList;
     }
 }

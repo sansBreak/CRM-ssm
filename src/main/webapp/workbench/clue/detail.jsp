@@ -51,8 +51,69 @@
             $(".myHref").mouseout(function () {
                 $(this).children("span").css("color", "#E6E6E6");
             });
+
+            //页面加载完毕后，取出关联的市场活动信息列表
+            showActivityList();
         });
 
+        function showActivityList() {
+            alert("运行showActivityList")
+            $.ajax({
+                url:"workbench/clue/getActivityListByClueId.do",
+                data:{
+                    "clueId":"${c.id}"  //在jQuery中使用el表达式，要加双引号
+                },
+                type:"get",
+                dataType:"json",
+                success:function (data) {
+                    /*  [{市场活动1},{市场活动2}]                */
+
+                    alert("关联的市场活动信息列表的ajax成功！")
+                    var html = "";
+
+                    $.each(data, function (i, n) {
+                        html += '<tr>';
+                        html += '<td>'+n.name+'</td>';
+                        html += '<td>'+n.startDate+'</td>';
+                        html += '<td>'+n.endDate+'</td>';
+                        html += '<td>'+n.owner+'</td>';            //unbund(\''+n.id+'\')中，我希望取得的id是关联关系表中的id，用于解除管理
+                        html += '<td><a href="javascript:void(0);" onclick="unbund(\''+n.id+'\')" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>';
+                        html += '</tr>';
+                    })
+                    $("#activityBody").html(html)
+
+                },
+                error:function () {
+                    alert("ajax请求失败")
+                }
+            })
+            alert("showActivityList结束啦")
+        }
+
+        function unbund() {
+            $.ajax({
+
+                url:"workbench/clue/unbund.do",
+                data:{
+                    //这里得id是关联表tbl_clue_activity_relation的id
+                    "id":id
+                },
+                type:"post",
+                dataType:"json",
+                success:function (data) {
+                    /*  返回true/false      */
+
+                    if (data){
+                        //解除关联成功，刷新列表
+                        showActivityList();
+                    }else {
+                        alert("解除关联失败！")
+                    }
+
+
+                }
+            })
+        }
     </script>
 
 </head>
@@ -454,8 +515,8 @@
                     <td></td>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
+                <tbody id="activityBody">
+                <%--<tr>
                     <td>发传单</td>
                     <td>2020-10-10</td>
                     <td>2020-10-20</td>
@@ -470,7 +531,7 @@
                     <td>zhangsan</td>
                     <td><a href="javascript:void(0);" style="text-decoration: none;"><span
                             class="glyphicon glyphicon-remove"></span>解除关联</a></td>
-                </tr>
+                </tr>--%>
                 </tbody>
             </table>
         </div>
