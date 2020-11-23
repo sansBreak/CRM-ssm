@@ -14,4 +14,5 @@ public interface ClueDao {
     Clue detail(String id);
 
     List<Activity> getActivityListByClueId(String clueId);
+
 }

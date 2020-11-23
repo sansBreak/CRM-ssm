@@ -14,4 +14,6 @@ public interface ClueService {
     List<Activity> getActivityListByClueId(String clueId);
 
     boolean unbund(String id);
+
+    boolean bund(String cid, String[] aids);
 }

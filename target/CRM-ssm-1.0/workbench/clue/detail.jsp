@@ -54,18 +54,105 @@
 
             //页面加载完毕后，取出关联的市场活动信息列表
             showActivityList();
+
+
+            //为关联市场活动模块窗口中的搜索框绑定事件，通过触发回车键，查询并展现所需市场活动列表
+            $("#aname").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    alert("查询的ajax即将开始")
+                    $.ajax({
+
+                        url: "workbench/clue/getActivityListByNameAndNotByClueId.do",
+                        data: {
+                            "aname":$.trim($("#aname").val()),
+                            "clueId":"${c.id}"
+                        },
+                        type: "get",
+                        dataType: "json",
+                        success: function (data) {
+                            /*     [{市场活动1},{市场活动2}]     */
+                            alert("查询的ajax成功")
+                            var html = "";
+                            $.each(data, function (i, n) {
+                                html += '<tr>';
+                                html += '<td><input type="checkbox" name="xz" value="'+n.id+'"/></td>';
+                                html += '<td>'+n.name+'</td>';
+                                html += '<td>'+n.startDate+'</td>';
+                                html += '<td>'+n.endDate+'</td>';
+                                html += '<td>'+n.owner+'</td>';
+                                html += '</tr>';
+                            })
+                            $("#activitySearchBody").html(html);
+
+                        }
+                    })
+
+
+                    //展现完列表后，将模态窗口默认的回车行为
+                    return false;
+                }
+            })
+
+            $("#bundBtn").click(function () {
+                alert("点击了关联按钮")
+                $xz=$("input[name=xz]:checked");
+
+                if ($xz.length==0){
+                    alert("请选择要关联的市场活动！")
+                }else {
+
+                    var param = "cid=${c.id}&";
+
+                    for (var i=0; i<$xz.length; i++){
+                        param += "aids="+$($xz[i]).val();
+
+                        if (i<$xz.length-1){
+                            param += "&";
+                        }
+                    }
+
+                    alert(param);
+                }
+                $.ajax({
+
+                    url:"workbench/clue/bund.do",
+                    data:param,
+                    type:"post",
+                    dataType:"json",
+                    success:function (data) {
+                        if (data){
+                            //关联成功
+                            alert("关联成功！！！")
+                            //刷新管理市场活动的列表
+                            showActivityList();
+
+                            //清除搜索框中的信息，复选框中的√去掉    清除activitySearchBody中的内容
+
+                            //关闭模态窗口
+                            $("#bundModal").modal("hide");
+
+                        }else {
+                            alert("关联市场活动失败！")
+                        }
+                    }
+                })
+
+            })
+
+
+
         });
 
         function showActivityList() {
 
             $.ajax({
-                url:"workbench/clue/getActivityListByClueId.do",
-                data:{
-                    "clueId":"${c.id}"  //在jQuery中使用el表达式，要加双引号
+                url: "workbench/clue/getActivityListByClueId.do",
+                data: {
+                    "clueId": "${c.id}"  //在jQuery中使用el表达式，要加双引号
                 },
-                type:"get",
-                dataType:"json",
-                success:function (data) {
+                type: "get",
+                dataType: "json",
+                success: function (data) {
                     /*  [{市场活动1},{市场活动2}]                */
 
 
@@ -73,17 +160,17 @@
 
                     $.each(data, function (i, n) {
                         html += '<tr>';
-                        html += '<td>'+n.name+'</td>';
-                        html += '<td>'+n.startDate+'</td>';
-                        html += '<td>'+n.endDate+'</td>';
-                        html += '<td>'+n.owner+'</td>';            //unbund(\''+n.id+'\')中，我希望取得的id是关联关系表中的id，用于解除管理,在dao层中，可将该条activity的id改为tbl_clue_activity_relation的id
-                        html += '<td><a href="javascript:void(0);" onclick="unbund(\''+n.id+'\')" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>';
+                        html += '<td>' + n.name + '</td>';
+                        html += '<td>' + n.startDate + '</td>';
+                        html += '<td>' + n.endDate + '</td>';
+                        html += '<td>' + n.owner + '</td>';            //unbund(\''+n.id+'\')中，我希望取得的id是关联关系表中的id，用于解除管理,在dao层中，可将该条activity的id改为tbl_clue_activity_relation的id
+                        html += '<td><a href="javascript:void(0);" onclick="unbund(\'' + n.id + '\')" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>';
                         html += '</tr>';
                     })
                     $("#activityBody").html(html)
 
                 },
-                error:function () {
+                error: function () {
                     alert("ajax请求失败")
                 }
             })
@@ -94,20 +181,20 @@
         function unbund(id) {
             $.ajax({
 
-                url:"workbench/clue/unbund.do",
-                data:{
+                url: "workbench/clue/unbund.do",
+                data: {
 
-                    "id":id
+                    "id": id
                 },
-                type:"post",
-                dataType:"json",
-                success:function (data) {
+                type: "post",
+                dataType: "json",
+                success: function (data) {
                     /*  返回true/false      */
 
-                    if (data){
+                    if (data) {
                         //解除关联成功，刷新列表
                         showActivityList();
-                    }else {
+                    } else {
                         alert("解除关联失败！")
                     }
 
@@ -115,6 +202,9 @@
                 }
             })
         }
+
+
+
     </script>
 
 </head>
@@ -134,8 +224,8 @@
                 <div class="btn-group" style="position: relative; top: 18%; left: 8px;">
                     <form class="form-inline" role="form">
                         <div class="form-group has-feedback">
-                            <input type="text" class="form-control" style="width: 300px;"
-                                   placeholder="请输入市场活动名称，支持模糊查询">
+                            <input type="text" class="form-control" id="aname" style="width: 300px;"
+                                   placeholder="111请输入市场活动名称，支持模糊查询">
                             <span class="glyphicon glyphicon-search form-control-feedback"></span>
                         </div>
                     </form>
@@ -151,8 +241,8 @@
                         <td></td>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
+                    <tbody id="activitySearchBody">
+                    <%--<tr>
                         <td><input type="checkbox"/></td>
                         <td>发传单</td>
                         <td>2020-10-10</td>
@@ -165,13 +255,13 @@
                         <td>2020-10-10</td>
                         <td>2020-10-20</td>
                         <td>zhangsan</td>
-                    </tr>
+                    </tr>--%>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">关联</button>
+                <button type="button" class="btn btn-primary" id="bundBtn">关联</button>
             </div>
         </div>
     </div>
@@ -363,7 +453,8 @@
 <div style="position: relative; top: -70px;">
     <div style="position: relative; left: 40px; height: 30px;">
         <div style="width: 300px; color: gray;">名称</div>
-        <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.fullname}${c.appellation}</b></div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.fullname}${c.appellation}</b>
+        </div>
         <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">所有者</div>
         <div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.owner}</b></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>

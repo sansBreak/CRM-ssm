@@ -3,6 +3,7 @@ package per.liu.crm.workbench.web.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import per.liu.crm.settings.domain.User;
@@ -11,11 +12,13 @@ import per.liu.crm.utils.DateTimeUtil;
 import per.liu.crm.utils.UUIDUtil;
 import per.liu.crm.workbench.domain.Activity;
 import per.liu.crm.workbench.domain.Clue;
+import per.liu.crm.workbench.service.ActivityService;
 import per.liu.crm.workbench.service.ClueService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/workbench/clue")
@@ -24,6 +27,8 @@ public class ClueController {
     private ClueService clueService;
     @Resource
     private UserService userService;
+    @Resource
+    private ActivityService activityService;
 
     @RequestMapping("/getUserList.do")
     @ResponseBody
@@ -77,5 +82,31 @@ public class ClueController {
     public boolean unbund(String id){
 
         return clueService.unbund(id);
+    }
+
+    @RequestMapping("/getActivityListByNameAndNotByClueId.do")
+    @ResponseBody
+    public List<Activity> getActivityListByNameAndNotByClueId(@RequestParam Map<String,String> map){
+                                 // @RequestParam 注解如果是个map类型,那么mvc适配器就将参数封装到map中
+        String aname =  map.get("aname");
+        String clueId = map.get("clueId");
+        System.out.println("aname=="+ aname + "    clueId=="+clueId);
+
+        List<Activity> activityList = activityService.getActivityListByNameAndNotByClueId(map);
+        System.out.println("size" + activityList.size());
+
+        for (Activity activity: activityList) {
+            System.out.println("--" + activity);
+        }
+
+        return activityList;
+
+    }
+
+    @RequestMapping("/bund.do")
+    @ResponseBody
+    public boolean bund(String cid,String[] aids){
+
+        return clueService.bund(cid,aids);
     }
 }
