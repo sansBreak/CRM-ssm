@@ -72,4 +72,10 @@ public class ClueController {
 
     }
 
+    @RequestMapping("/unbund.do")
+    @ResponseBody
+    public boolean unbund(String id){
+
+        return clueService.unbund(id);
+    }
 }

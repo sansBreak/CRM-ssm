@@ -12,4 +12,6 @@ public interface ClueService {
     Clue detail(String id);
 
     List<Activity> getActivityListByClueId(String clueId);
+
+    boolean unbund(String id);
 }

@@ -85,7 +85,7 @@
 
     <select id="getActivityListByClueId" resultType="Activity">
         select
-            a.id,
+            car.id as id,
             a.name,
             u.name as owner,
             a.startDate,

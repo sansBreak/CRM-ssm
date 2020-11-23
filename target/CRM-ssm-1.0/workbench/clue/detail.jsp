@@ -57,7 +57,7 @@
         });
 
         function showActivityList() {
-            alert("运行showActivityList")
+
             $.ajax({
                 url:"workbench/clue/getActivityListByClueId.do",
                 data:{
@@ -68,7 +68,7 @@
                 success:function (data) {
                     /*  [{市场活动1},{市场活动2}]                */
 
-                    alert("关联的市场活动信息列表的ajax成功！")
+
                     var html = "";
 
                     $.each(data, function (i, n) {
@@ -76,7 +76,7 @@
                         html += '<td>'+n.name+'</td>';
                         html += '<td>'+n.startDate+'</td>';
                         html += '<td>'+n.endDate+'</td>';
-                        html += '<td>'+n.owner+'</td>';            //unbund(\''+n.id+'\')中，我希望取得的id是关联关系表中的id，用于解除管理
+                        html += '<td>'+n.owner+'</td>';            //unbund(\''+n.id+'\')中，我希望取得的id是关联关系表中的id，用于解除管理,在dao层中，可将该条activity的id改为tbl_clue_activity_relation的id
                         html += '<td><a href="javascript:void(0);" onclick="unbund(\''+n.id+'\')" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>';
                         html += '</tr>';
                     })
@@ -87,15 +87,16 @@
                     alert("ajax请求失败")
                 }
             })
-            alert("showActivityList结束啦")
+
         }
 
-        function unbund() {
+        //这里的id是关联表 tbl_clue_activity_relation 的id
+        function unbund(id) {
             $.ajax({
 
                 url:"workbench/clue/unbund.do",
                 data:{
-                    //这里得id是关联表tbl_clue_activity_relation的id
+
                     "id":id
                 },
                 type:"post",
