@@ -24,8 +24,7 @@ public class ClueActivityRelation {
 	public void setActivityId(String activityId) {
 		this.activityId = activityId;
 	}
-	
-	
 
-	
+
+
 }

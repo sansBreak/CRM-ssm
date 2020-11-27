@@ -12,6 +12,7 @@ import per.liu.crm.utils.DateTimeUtil;
 import per.liu.crm.utils.UUIDUtil;
 import per.liu.crm.workbench.domain.Activity;
 import per.liu.crm.workbench.domain.Clue;
+import per.liu.crm.workbench.domain.Tran;
 import per.liu.crm.workbench.service.ActivityService;
 import per.liu.crm.workbench.service.ClueService;
 
@@ -109,4 +110,46 @@ public class ClueController {
 
         return clueService.bund(cid,aids);
     }
+
+    @RequestMapping("/getActivityListByName.do")
+    @ResponseBody
+    public List<Activity> getActivityListByName(String aname){
+        System.out.println("查询市场活动列表（根据名称模糊查）");
+
+        return activityService.getActivityListByName(aname);
+    }
+
+    @RequestMapping("/convert.do")
+    @ResponseBody
+    public ModelAndView convert(String flag, String clueId, Tran tran, HttpServletRequest request){
+        System.out.println("执行线索转换的操作");
+
+        ModelAndView mv = new ModelAndView();
+
+        //flag 这个参数是代表是否需要创建交易的标记,如果需要创建交易，则接收表单中的参数
+        if ("a".equals(flag)){
+            //若flag里存储的是a，则需要创建交易,由于部分参数已经自动赋给Tran对象，我们只需完善一部分即可
+            tran.setId(UUIDUtil.getUUID());
+            tran.setCreateTime(DateTimeUtil.getSysTime());
+            tran.setCreateBy(((User)request.getSession().getAttribute("user")).getName());
+        }
+
+        /*
+
+
+        */
+        System.out.println("================"+tran);
+
+        boolean flag1 = clueService.convert(clueId,tran);
+
+
+
+        if (flag1){
+            mv.setViewName("redirect:/" + request.getContextPath() + "/workbench/clue/index.jsp");
+        }
+
+        return mv;
+    }
+
+
 }

@@ -26,7 +26,6 @@
         })*/
 
         $(function () {
-            alert("进入到clue下的index.jsp")
 
             //加入时间控件  使用的是class选择器
             $(".time").datetimepicker({

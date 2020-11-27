@@ -42,6 +42,7 @@
             pickerPosition: "bottom-left"
         });
 
+        String createBy = ((User)request.getSession().getAttribute("user")).getName()
 
     </script>
 

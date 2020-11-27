@@ -55,11 +55,24 @@
             //页面加载完毕后，取出关联的市场活动信息列表
             showActivityList();
 
+            //为全选的复选框绑定事件
+            $("#qx").click(function () {
+                //当qx被点击时，name为xz的input标签全部被选中
+                $("input[name=xz]").prop("checked",this.checked);
+
+            })
+
+            //当选择按钮被点击时，检查已经勾选的多选框
+            $("#activitySearchBody").on("click", $("input[name=xz]"), function () {
+
+                //若已经勾选的对象的数量与全部对象的数量相等，则全选框自动变为勾选；不相等则自动取消勾选
+                $("#qx").prop("checked", $("input[name=xz]").length == $("input[name=xz]:checked").length);
+
+            })
 
             //为关联市场活动模块窗口中的搜索框绑定事件，通过触发回车键，查询并展现所需市场活动列表
             $("#aname").keydown(function (event) {
                 if (event.keyCode == 13) {
-                    alert("查询的ajax即将开始")
                     $.ajax({
 
                         url: "workbench/clue/getActivityListByNameAndNotByClueId.do",
@@ -71,7 +84,7 @@
                         dataType: "json",
                         success: function (data) {
                             /*     [{市场活动1},{市场活动2}]     */
-                            alert("查询的ajax成功")
+
                             var html = "";
                             $.each(data, function (i, n) {
                                 html += '<tr>';
@@ -94,7 +107,7 @@
             })
 
             $("#bundBtn").click(function () {
-                alert("点击了关联按钮")
+
                 $xz=$("input[name=xz]:checked");
 
                 if ($xz.length==0){
@@ -111,7 +124,6 @@
                         }
                     }
 
-                    alert(param);
                 }
                 $.ajax({
 
@@ -121,12 +133,16 @@
                     dataType:"json",
                     success:function (data) {
                         if (data){
-                            //关联成功
-                            alert("关联成功！！！")
+
                             //刷新管理市场活动的列表
                             showActivityList();
 
                             //清除搜索框中的信息，复选框中的√去掉    清除activitySearchBody中的内容
+                            //$("#aname").val("");
+
+                            $("#activitySearchBody").html("");
+                            //$("#clueBundForm")[0].reset();
+                            $("qx").prop("checked",false)
 
                             //关闭模态窗口
                             $("#bundModal").modal("hide");
@@ -138,6 +154,7 @@
                 })
 
             })
+
 
 
 
@@ -222,7 +239,7 @@
             </div>
             <div class="modal-body">
                 <div class="btn-group" style="position: relative; top: 18%; left: 8px;">
-                    <form class="form-inline" role="form">
+                    <form id="clueBundForm" class="form-inline" role="form" >
                         <div class="form-group has-feedback">
                             <input type="text" class="form-control" id="aname" style="width: 300px;"
                                    placeholder="111请输入市场活动名称，支持模糊查询">
@@ -233,7 +250,7 @@
                 <table id="activityTable" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
                     <thead>
                     <tr style="color: #B3B3B3;">
-                        <td><input type="checkbox"/></td>
+                        <td><input type="checkbox" id="qx"/></td>
                         <td>名称</td>
                         <td>开始日期</td>
                         <td>结束日期</td>
@@ -439,7 +456,7 @@
         <h3>${c.fullname}${c.appellation} <small>${c.company}</small></h3>
     </div>
     <div style="position: relative; height: 50px; width: 500px;  top: -72px; left: 700px;">
-        <button type="button" class="btn btn-default" onclick="window.location.href='workbench/clue/convert.jsp';"><span
+        <button type="button" class="btn btn-default" onclick="window.location.href='workbench/clue/convert.jsp?id=${c.id}&fullname=${c.fullname}&appellation=${c.appellation}&company=${c.company}&owner=${c.owner}';"><span
                 class="glyphicon glyphicon-retweet"></span> 转换
         </button>
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editClueModal"><span
